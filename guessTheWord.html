@@ -74,7 +74,7 @@
     getNew();
 
     var submit = function(){
-      let answer = document.getElementById('answer').value;
+      let answer = document.getElementById('answer').value.toLowerCase();
       if (answer == key) {
         alert('Correct! (+5)');
         score += 5;
