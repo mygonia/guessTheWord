@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <link rel="stylesheet" href="guessTheWord.css">
+    <title>Guess the Word</title>
+    <script type="text/javascript" src="nouns.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
+  </head>
+  <body>
+    <div id="maincontent" class="container">
+      <h1 id="score" class="display-1|2|3|4">Score:</h1>
+      <h2 id="scoreNumber"></h2>
+      <div>
+        <div class="row">
+          <div class="col-md-6 pic"><img id="topLeft" src="" alt="" class="img-rounded center-block"></div>
+          <div class="col-md-6 pic"><img id="topRight" src="" alt="" class="img-rounded center-block"></div>
+        </div>
+        <div class="row">
+          <div class="col-md-6 pic"><img id="bottomLeft" src="" alt="" class="img-rounded center-block"></div>
+          <div class="col-md-6 pic"><img id="bottomRight" src="" alt="" class="img-rounded center-block"></div>
+        </div>
+      </div>
+    </div>
+    <div style="text-align: center;">
+      <span id="numLetters"></span>
+    </div>
+    <div id="answerWrapper">
+      Answer: <input id="answer" type="text" class="form-control-plaintext" autofocus>
+    </div>
+    <script type="text/javascript">
+    var key;
+    var score = 0;
+    var currHint;
+    var letters;
+    var getNew = function(){
+      currHint = 0;
+      var tL = document.getElementById('topLeft');
+      var tR = document.getElementById('topRight');
+      var bL = document.getElementById('bottomLeft');
+      var bR = document.getElementById('bottomRight');
+
+      tL.src = "";
+      tR.src = "";
+      bL.src = "";
+      bR.src = "";
+
+      var randomProperty = function (obj) {
+          var keys = Object.keys(obj);
+          key = keys[ keys.length * Math.random() << 0];
+          console.log(key);
+          return obj[key];
+      };
+      var pics = randomProperty(nouns);
+      tL.src = pics[0]
+      tR.src = pics[1]
+      bL.src = pics[2]
+      bR.src = pics[3]
+
+      document.getElementById('numLetters').innerHTML = "";
+      let str = "";
+      for (let i = 0; i < key.length; i++){
+        str += "_ "
+      }
+      document.getElementById('numLetters').innerHTML = str;
+
+      document.getElementById('scoreNumber').innerHTML = score;
+      document.getElementById('answer').value = "";
+      currHint = 0;
+      letters = key.split('');
+    };
+    getNew();
+
+    var submit = function(){
+      let answer = document.getElementById('answer').value;
+      if (answer == key) {
+        alert('Correct! (+5)');
+        score += 5;
+        getNew();
+      } else {
+        alert('Wrong. Try again.');
+      }
+    }
+
+    var input = document.getElementById('answer');
+    input.addEventListener("keyup", function(event) {
+      if (event.keyCode === 13) {
+        event.preventDefault();
+        document.getElementById("submit").click();
+      } else if (event.keyCode === 27) {
+        event.preventDefault();
+        skip();
+      } else if (event.keyCode === 16) {
+        event.preventDefault();
+        getHint();
+      }
+    });
+
+    var getHint = function(){
+      score -= 1;
+      numLettersHint = document.getElementById('numLetters');
+      numLettersHint.innerHTML = numLettersHint.innerHTML.replace('_', letters[currHint]);
+      document.getElementById('scoreNumber').innerHTML = score;
+      currHint += 1;
+    };
+
+    var skip = function(){
+      score -= 3;
+      alert('Answer was: ' + key);
+      getNew();
+    };
+    </script>
+    <div>
+      <button id='submit' type="button" name="button" onclick="submit()" class="btn btn-primary">Submit Answer</button>
+    </div>
+    <div>
+      <button id='hint' type="button" name="button" onclick='getHint()' class="btn btn-secondary">Get Hint (-1)</button>
+    </div>
+    <div>
+      <button id='skip' type="button" name="button" onclick='skip()' class="btn btn-danger">Skip (-3)</button>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js" integrity="sha384-vZ2WRJMwsjRMW/8U7i6PWi6AlO1L79snBrmgiDpgIWJ82z8eA5lenwvxbMV1PAh7" crossorigin="anonymous"></script>
+  </body>
+</html>

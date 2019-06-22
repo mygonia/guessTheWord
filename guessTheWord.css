@@ -1,0 +1,22 @@
+body {
+  font-family: 'Roboto', 'Open Sans', 'Raleway', sans-serif;
+}
+
+img {
+  max-width: 25vw;
+  max-height: 25vh;
+  object-fit: contain;
+}
+
+#answerWrapper, #score, #scoreNumber, #numLetters {
+  text-align: center;
+}
+
+#submit, #skip, #hint {
+  margin:auto;
+  display:block;
+}
+
+#numLetters {
+  font-size: 5vw;
+}
